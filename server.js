@@ -59,9 +59,20 @@ async function initDatabase() {
     )
   `);
 
-  // Миграция со старой схемы (email -> login), чтобы не ломать существующие БД.
+  // Безопасная миграция со старой схемы (email -> login).
   await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS login VARCHAR(255)`);
-  await pool.query(`UPDATE users SET login = email WHERE login IS NULL AND email IS NOT NULL`);
+
+  const emailColumnCheck = await pool.query(`
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_name = 'users' AND column_name = 'email'
+    LIMIT 1
+  `);
+
+  if (emailColumnCheck.rowCount > 0) {
+    await pool.query(`UPDATE users SET login = email WHERE login IS NULL AND email IS NOT NULL`);
+  }
+
   await pool.query(`CREATE UNIQUE INDEX IF NOT EXISTS users_login_unique_idx ON users(login)`);
 }
 
