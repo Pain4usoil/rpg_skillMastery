@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Авторизация</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f6f7fb;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 80px auto;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 24px;
+      }
+
+      h1 {
+        margin: 0 0 16px;
+        font-size: 24px;
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+      }
+
+      input,
+      button {
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      #result {
+        min-height: 24px;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Авторизация</h1>
+      <form id="loginForm">
+        <input id="email" type="email" placeholder="Email" required />
+        <input id="password" type="password" placeholder="Пароль" required />
+        <button type="submit">Войти</button>
+      </form>
+      <p id="result"></p>
+      <a href="/register.html">Нет аккаунта? Зарегистрироваться</a>
+    </main>
+
+    <script>
+      const form = document.getElementById("loginForm");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        result.textContent = data.message;
+        result.style.color = response.ok ? "green" : "crimson";
+
+        if (response.ok) {
+          setTimeout(() => {
+            window.location.href = "/profile.html";
+          }, 800);
+        }
+      });
+    </script>
+  </body>
+</html>
