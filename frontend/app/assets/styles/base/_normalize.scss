@@ -1,0 +1,90 @@
+@import './variables';
+
+*,
+*::after,
+*::before
+{
+	margin: 0;
+	padding: 0;
+	font-family: $Jost;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+html
+{
+	scroll-behavior: smooth;
+	-webkit-text-size-adjust: 100%;
+}
+
+body
+{
+	color: $white;
+	line-height: 1.5;
+	min-height: 100vh;
+	text-rendering: optimizeSpeed;
+}
+
+ul, ol { list-style: none; }
+
+a
+{
+	color: inherit;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+img,
+picture,
+video,
+canvas,
+svg
+{
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select
+{
+	border: none;
+	font: inherit;
+	outline: none;
+	color: inherit;
+	background: none;
+}
+
+input[type="number"]
+{
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+	&,
+	&:hover,
+	&:focus { appearance: none; -moz-appearance: textfield; }
+}
+
+button
+{
+	cursor: pointer;
+	background: none;
+}
+
+table
+{
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+@media (prefers-reduced-motion: reduce)
+{
+	*
+	{
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+	}
+}
