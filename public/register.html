@@ -50,8 +50,14 @@
     <main class="container">
       <h1>Регистрация</h1>
       <form id="registerForm">
-        <input id="email" type="email" placeholder="Email" required />
+        <input id="login" type="text" placeholder="Логин" required />
         <input id="password" type="password" placeholder="Пароль" required />
+        <input
+          id="confirmPassword"
+          type="password"
+          placeholder="Подтвердите пароль"
+          required
+        />
         <button type="submit">Зарегистрироваться</button>
       </form>
       <p id="result"></p>
@@ -65,13 +71,20 @@
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
+        const login = document.getElementById("login").value.trim();
         const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          result.textContent = "Пароли не совпадают";
+          result.style.color = "crimson";
+          return;
+        }
 
         const response = await fetch("/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ login, password, confirmPassword })
         });
 
         const data = await response.json();
